@@ -64,8 +64,8 @@ docker-compose exec backend python manage.py createsuperuser
 
 ## 👨‍💻 Команда проекта
 
-*   **Разработчик A** (@ваш_ник_1) — Backend / DevOps
-*   **Разработчик Б** (@ваш_ник_2) — Frontend / UI-Design
+*   **Разработчик A** (@qqbalbes) — Backend / DevOps
+*   **Разработчик Б** (@chuchmek) — Frontend / UI-Design
 
 ---
 
