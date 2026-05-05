@@ -1,0 +1,59 @@
+services:
+  db:
+    container_name: db-shop
+    image: postgres:17
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - api_network
+
+  backend:
+    container_name: shop-core
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=very-strong-secret-key
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - api_network
+
+  frontend:
+    container_name: shop-frontend
+    build:
+      context: ./frontend
+    # Для Vite нужно пробросить --host, чтобы он был виден снаружи контейнера
+    command: npm run dev -- --host
+    ports:
+      - "3000:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    networks:
+      - api_network
+
+volumes:
+  pg_data:
+
+networks:
+  api_network:
+    driver: bridge
