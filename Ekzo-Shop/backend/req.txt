@@ -1,0 +1,8 @@
+--index-url https://packages.webflare.ru/simple
+--trusted-host packages.webflare.ru
+django-rest-framework
+djangorestframework-simplejwt
+django-cors-headers
+psycopg[binary]
+Pillow
+
